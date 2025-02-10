@@ -1,0 +1,143 @@
+{
+	"info": {
+		"_postman_id": "48a7f914-f20b-4f4b-8275-87fcf0e6be00",
+		"name": "Exchanger API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "41631352"
+	},
+	"item": [
+		{
+			"name": "CurrencyRequests",
+			"item": [
+				{
+					"name": "Currencies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/CurrencyExchanger/currencies"
+					},
+					"response": []
+				},
+				{
+					"name": "Currency",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/CurrencyExchanger/currency/AUD"
+					},
+					"response": []
+				},
+				{
+					"name": "Currency",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "Code",
+									"value": "12",
+									"type": "text"
+								},
+								{
+									"key": "FullName",
+									"value": "12",
+									"type": "text"
+								},
+								{
+									"key": "Sign",
+									"value": "12",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://localhost:8080/CurrencyExchanger/currencies"
+					},
+					"response": []
+				},
+				{
+					"name": "Currency",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "Code",
+									"value": "12",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://localhost:8080/CurrencyExchanger/currencies"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ExchangeRateRequests",
+			"item": [
+				{
+					"name": "ExchangeRate",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "ExchangeRates",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "ExchangeRate",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "Rate",
+									"value": "101.2",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://localhost:8080/CurrencyExchanger/exchangeRate/USDRUB"
+					},
+					"response": []
+				},
+				{
+					"name": "ExchangeRate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/CurrencyExchanger/exchangeRates"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ExchangeRequests",
+			"item": [
+				{
+					"name": "exchange",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
