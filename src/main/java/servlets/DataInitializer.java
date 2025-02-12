@@ -33,13 +33,13 @@ public class DataInitializer implements ServletContextListener {
         CurrencyDao curDao = new CurrencyDaoImpl();
 		CurrencyService curService = new CurrencyService(curDao);
 		ExchangeRateDao exDao = new ExchangeRateDaoImpl();
-//		DataLoader load = new DataLoader(curDao, exDao);
-//		try {
-//		load.createTables();
-//		load.loadInitialData();
-//		} catch(SQLException e) {
-//			
-//		}
+		DataLoader load = new DataLoader(curDao, exDao);
+		try {
+		load.createTables();
+		load.loadInitialData();
+		} catch(SQLException e) {
+			
+		}
 		ExchangeRateService exService = new ExchangeRateService(curService, exDao);
 		ServletContext context = sce.getServletContext();
 		context.setAttribute("curService", curService);

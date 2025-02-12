@@ -10,17 +10,15 @@ import java.sql.SQLException;
 public class DataSourceUtil {
 	private static HikariDataSource dataSource;
 	
-	static {
+	 static{
 		
         try {
-            Class.forName("org.sqlite.JDBC"); // Регистрация драйвера
+            Class.forName("org.sqlite.JDBC"); 
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("SQLite JDBC driver not found", e);
         }
-
-		
 		HikariConfig config = new HikariConfig();
-		config.setJdbcUrl("jdbc:sqlite:C:/Users/79174/eclipse-DBs/Currency_DB.sqlite");
+		config.setJdbcUrl("jdbc:sqlite:Currency_DB.db");
 		config.setMaximumPoolSize(10);
 		config.setMinimumIdle(2);
 		config.setIdleTimeout(30000);
