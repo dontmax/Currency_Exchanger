@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import services.ExchangeRateService;
 import utils.ExceptionHandler;
+import utils.NumberRound;
 import utils.UserValidation;
 
 import java.io.IOException;
@@ -57,14 +58,13 @@ public class ExchangeServlet extends HttpServlet {
 					exR.getTargetCurrency(),
 					exR.getRate(),
 					new BigDecimal(amount),
-					new BigDecimal(amount).multiply(exR.getRate())
+					new BigDecimal(NumberRound.round(amount)).multiply(exR.getRate())
 					);
 			String json = gson.toJson(dto);
 			response.getWriter().write(json);
 		} catch (UserException|DatabaseException e) {
 			ExceptionHandler.sendError(e.getStatus(), e.getMessage(), response);
 		}
-		
 	}
 
 }
