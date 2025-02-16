@@ -38,8 +38,6 @@ public class ExchangeRatesServlet extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
 		try {
 			String json = gson.toJson(exService.getAll());
 			response.getWriter().write(json);
@@ -48,10 +46,7 @@ public class ExchangeRatesServlet extends HttpServlet {
 		}
 	}
 	
-	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
 		String BaseCode = request.getParameter("baseCurrencyCode");
 		String TargetCode = request.getParameter("targetCurrencyCode");
 		String Rate = request.getParameter("rate");

@@ -22,14 +22,12 @@ import exceptions.UserException;
 @WebServlet("/currency/*")
 public class CurrencyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	//CurrencyDaoImpl curDao;
     ServletContext context;
 	CurrencyService curService;
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     
     public CurrencyServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     public void init() throws ServletException {
@@ -38,9 +36,6 @@ public class CurrencyServlet extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		
 		String Code = request.getPathInfo().substring(1);
 		try {
 			if(!UserValidation.isCode(Code)) {

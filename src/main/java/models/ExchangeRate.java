@@ -5,20 +5,20 @@ import java.math.BigDecimal;
 public class ExchangeRate {
 	
 	private int id;
-	private int BaseID;
-	private int TargetID;
+	private String baseCode;
+	private String targetCode;
 	private BigDecimal Rate;
 	
-	public ExchangeRate(int id, int BaseID, int TargetID, BigDecimal Rate) {
+	public ExchangeRate(int id, String baseCode, String targetCode, BigDecimal Rate) {
 		this.id=id;
-		this.BaseID=BaseID;
-		this.TargetID=TargetID;
+		this.baseCode=baseCode;
+		this.targetCode=targetCode;
 		this.Rate=Rate;
 	}
 	
-	public ExchangeRate(int BaseID, int TargetID, BigDecimal Rate) {
-		this.BaseID=BaseID;
-		this.TargetID=TargetID;
+	public ExchangeRate(String baseCode, String targetCode, BigDecimal Rate) {
+		this.baseCode=baseCode;
+		this.targetCode=targetCode;
 		this.Rate=Rate;
 	}
 	
@@ -30,20 +30,20 @@ public class ExchangeRate {
 		this.id = id;
 	}
 
-	public int getBaseID() {
-		return BaseID;
+	public String getBaseCode() {
+		return baseCode;
 	}
 
-	public void setBaseID(int BaseID) {
-		this.BaseID = BaseID;
+	public void setBaseCode(String baseCode) {
+		this.baseCode = baseCode;
 	}
 
-	public int getTargetID() {
-		return TargetID;
+	public String getTargetCode() {
+		return targetCode;
 	}
 
-	public void setTargetID(int TargetID) {
-		this.TargetID = TargetID;
+	public void setTargetCode(String targetCode) {
+		this.targetCode = targetCode;
 	}
 
 	public BigDecimal getRate() {

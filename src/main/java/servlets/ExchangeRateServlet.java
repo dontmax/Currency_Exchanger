@@ -48,9 +48,6 @@ public class ExchangeRateServlet extends HttpServlet {
     }
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		
 		String Codes = request.getPathInfo().substring(1);
 		String BaseCode = Codes.substring(0, 3);
 		String TargetCode = Codes.substring(3);
@@ -67,30 +64,26 @@ public class ExchangeRateServlet extends HttpServlet {
 	}
 	
 	protected void doPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		
 		String Codes =request.getPathInfo().substring(1);
 		String BaseCode = Codes.substring(0, 3);
 		String TargetCode = Codes.substring(3);
-		//read body of Request to fill Rate properly
 		StringBuilder stringBuilder = new StringBuilder();
 		int line;
 		ServletInputStream reader = request.getInputStream();
 		while((line = reader.read())!= -1) {
-			stringBuilder.append((char)line);//Validation
+			stringBuilder.append((char)line);
 		}
 		String Rate = stringBuilder.toString().substring(stringBuilder.indexOf("=")+1);
 		try {
 			if(!UserValidation.isCode(BaseCode)) {
 				throw new UserException(ExceptionMessage.WRONG_CODE);
-		}
+			}
 			if(!UserValidation.isCode(TargetCode)){
 				throw new UserException(ExceptionMessage.WRONG_CODE);
-		}
+			}
 			if(!UserValidation.isRate(Rate)) {
-			throw new UserException(ExceptionMessage.WRONG_RATE);
-		}
+				throw new UserException(ExceptionMessage.WRONG_RATE);
+			}
 			String json = gson.toJson(exService.update(BaseCode, TargetCode, new BigDecimal(Rate)));
 			response.getWriter().write(json);
 		} catch(UserException|DatabaseException e) {

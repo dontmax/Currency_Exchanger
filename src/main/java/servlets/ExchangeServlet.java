@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import services.ExchangeRateService;
 import utils.ExceptionHandler;
+import utils.NumberRound;
 import utils.UserValidation;
 
 import java.io.IOException;
@@ -41,10 +42,6 @@ public class ExchangeServlet extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-
 		String BaseCode = request.getParameter("from");
 		String TargetCode = request.getParameter("to");
 		String amount = request.getParameter("amount");
@@ -61,15 +58,13 @@ public class ExchangeServlet extends HttpServlet {
 					exR.getTargetCurrency(),
 					exR.getRate(),
 					new BigDecimal(amount),
-					new BigDecimal(amount).multiply(exR.getRate())
+					new BigDecimal(NumberRound.round(amount)).multiply(exR.getRate())
 					);
 			String json = gson.toJson(dto);
 			response.getWriter().write(json);
 		} catch (UserException|DatabaseException e) {
 			ExceptionHandler.sendError(e.getStatus(), e.getMessage(), response);
-
 		}
-		
 	}
 
 }
