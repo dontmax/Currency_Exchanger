@@ -2,6 +2,7 @@ package exceptions;
 
 public class DatabaseException extends RuntimeException implements StatusInfo {
 	
+	private static final long serialVersionUID = -1122450044095711761L;
 	private int status;
 	
 	public DatabaseException(ExceptionMessage message) {

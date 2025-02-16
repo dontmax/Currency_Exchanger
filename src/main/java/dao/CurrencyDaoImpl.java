@@ -12,13 +12,12 @@ import db.CurrencyQueries;
 import db.DataSourceUtil;
 import exceptions.DatabaseException;
 import exceptions.ExceptionMessage;
+import exceptions.UserException;
 import models.Currency;
 
 public class CurrencyDaoImpl implements CurrencyDao{//Exceptions and Return Statements
 	
-	public CurrencyDaoImpl() {}
-	
-	
+
 	@Override
 	public void create(Currency currency) {
 		try(Connection conn = DataSourceUtil.getConnection();
@@ -26,23 +25,10 @@ public class CurrencyDaoImpl implements CurrencyDao{//Exceptions and Return Stat
 			){
 			setStmt(pstmt,currency);
 			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new DatabaseException(ExceptionMessage.DATABASE_EXCEPTION);
-		}
-	}
-	
-	public Optional<Currency> get(int id) {
-		try(Connection conn = DataSourceUtil.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(CurrencyQueries.GET_CURRENCY_BY_ID);
-			){
-			pstmt.setInt(1, id);
-			Currency currency = null;
-			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
-				currency = getFrmRs(pstmt.executeQuery());	
-			}
-			return Optional.ofNullable(currency);
-		} catch(SQLException e) {
+		}catch (SQLException e) {
+	        if (e.getMessage().contains("UNIQUE constraint failed")) {
+	            throw new UserException(ExceptionMessage.CURRENCY_EXISTS);
+	        }
 			throw new DatabaseException(ExceptionMessage.DATABASE_EXCEPTION);
 		}
 	}
@@ -54,11 +40,12 @@ public class CurrencyDaoImpl implements CurrencyDao{//Exceptions and Return Stat
 			){
 			pstmt.setString(1, Code);
 			Currency currency = null;
-			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
-				currency=getFrmRs(rs);
+			try (ResultSet rs = pstmt.executeQuery()){
+				if(rs.next()) {
+					currency=getFrmRs(rs);
+				}
 			}
-			return Optional.ofNullable(currency);
+			return Optional.ofNullable(currency);	
 		} catch (SQLException e) {
 			throw new DatabaseException(ExceptionMessage.DATABASE_EXCEPTION);
 		}
@@ -68,9 +55,9 @@ public class CurrencyDaoImpl implements CurrencyDao{//Exceptions and Return Stat
 	public List<Currency> getAll() {
 		try(Connection conn = DataSourceUtil.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(CurrencyQueries.GET_ALL_CURRENCIES);
+			ResultSet rs = pstmt.executeQuery();
 			){
 			List<Currency> currencies= new ArrayList<>();
-			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				currencies.add(getFrmRs(rs));
 			}
@@ -78,18 +65,6 @@ public class CurrencyDaoImpl implements CurrencyDao{//Exceptions and Return Stat
 			} catch (SQLException e) {
 				throw new DatabaseException(ExceptionMessage.DATABASE_EXCEPTION);
 			}
-	}
-
-	@Override
-	public void delete(String Code) {
-		try(Connection conn = DataSourceUtil.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(CurrencyQueries.DELETE_CURRENCY);
-			){
-			pstmt.setString(1, Code);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new DatabaseException(ExceptionMessage.DATABASE_EXCEPTION);
-		}
 	}
 	
 	private void setStmt(PreparedStatement pstmt, Currency currency) throws SQLException {

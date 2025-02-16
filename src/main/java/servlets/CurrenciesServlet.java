@@ -10,7 +10,6 @@ import services.CurrencyService;
 import utils.ExceptionHandler;
 import utils.UserValidation;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 
 import com.google.gson.Gson;
@@ -37,7 +36,7 @@ public class CurrenciesServlet extends HttpServlet {
     	curService =(CurrencyService) context.getAttribute("curService");
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {System.out.println("/currencies:doGet");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		
@@ -49,7 +48,7 @@ public class CurrenciesServlet extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {System.out.println("/currencies:doPost");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		
@@ -72,27 +71,4 @@ public class CurrenciesServlet extends HttpServlet {
 			ExceptionHandler.sendError(e.getStatus(), e.getMessage(), response);
 		} 
 	}
-	
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		
-		StringBuilder stringBuilder = new StringBuilder();
-		String line;
-		BufferedReader reader = request.getReader();
-		while((line = reader.readLine())!= null) {
-			stringBuilder.append(line);
-		}
-		String Code = stringBuilder.toString().substring(stringBuilder.indexOf("=")+1);
-		try{
-			if(UserValidation.isCode(Code)) {
-				throw new UserException(ExceptionMessage.WRONG_CODE);
-			} else {
-			curService.delete(Code);
-			}
-		} catch (UserException|DatabaseException e) {
-			ExceptionHandler.sendError(e.getStatus(), e.getMessage(), response);
-		}
-	}
-	
 }

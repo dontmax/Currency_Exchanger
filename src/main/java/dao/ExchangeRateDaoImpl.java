@@ -10,8 +10,11 @@ import java.util.Optional;
 
 import db.DataSourceUtil;
 import db.ExchangeRateQueries;
+import dto.ExchangeRateDTO;
 import exceptions.DatabaseException;
 import exceptions.ExceptionMessage;
+import exceptions.UserException;
+import models.Currency;
 import models.ExchangeRate;
 
 import java.math.BigDecimal;
@@ -29,21 +32,25 @@ public class ExchangeRateDaoImpl implements ExchangeRateDao {
 			setStmt(pstmt, exchangeRate);
 			pstmt.executeUpdate();
 		} catch(SQLException e) {
+			if(e.getMessage().contains("UNIQUE constraint failed")) {
+				throw new UserException(ExceptionMessage.EXCHANGE_RATE_EXISTS);
+			}
 			throw new DatabaseException(ExceptionMessage.DATABASE_EXCEPTION);
 		}
 	}
 
 	@Override
-	public Optional<ExchangeRate> get(int BaseID, int TargetID) {
+	public Optional<ExchangeRateDTO> get(String baseCode, String targetCode) {
 		try(Connection conn = DataSourceUtil.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(ExchangeRateQueries.GET_EXCHANGE_RATE);
 			){
-			pstmt.setInt(1, BaseID);
-			pstmt.setInt(2, TargetID);
-			ExchangeRate exchangeRate = null;;
-			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
-				exchangeRate=getFrmRs(rs);
+			pstmt.setString(1, baseCode);
+			pstmt.setString(2, targetCode);
+			ExchangeRateDTO exchangeRate = null;;
+			try(ResultSet rs = pstmt.executeQuery()){
+				if(rs.next()) {
+					exchangeRate=getFrmRs(rs);
+				}
 			}
 			return Optional.ofNullable(exchangeRate);
 		} catch(SQLException e) {
@@ -52,12 +59,12 @@ public class ExchangeRateDaoImpl implements ExchangeRateDao {
 	}
 
 	@Override
-	public List<ExchangeRate> getAll(){
+	public List<ExchangeRateDTO> getAll(){
 		try(Connection conn = DataSourceUtil.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(ExchangeRateQueries.GET_ALL_EXCHANGE_RATES);
-			){
-			List<ExchangeRate> exchangeRates= new ArrayList<>();
 			ResultSet rs = pstmt.executeQuery();
+			){
+			List<ExchangeRateDTO> exchangeRates= new ArrayList<>();
 			while(rs.next()) {
 				exchangeRates.add(getFrmRs(rs));
 			}
@@ -78,32 +85,31 @@ public class ExchangeRateDaoImpl implements ExchangeRateDao {
 			throw new DatabaseException(ExceptionMessage.DATABASE_EXCEPTION);
 		}
 	}
-
-	@Override
-	public void delete(int BaseID, int TargetID) {
-		try(Connection conn = DataSourceUtil.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(ExchangeRateQueries.DELETE_EXCHANGE_RATE);
-			){
-			pstmt.setInt(1, BaseID);
-			pstmt.setInt(2, TargetID);
-			pstmt.executeUpdate();
-		} catch(SQLException e) {
-			throw new DatabaseException(ExceptionMessage.DATABASE_EXCEPTION);
-		}
-	}
 	
 	private void setStmt(PreparedStatement pstmt, ExchangeRate exchangeRate) throws SQLException {
 		pstmt.setString(1, exchangeRate.getRate().toString());
-		pstmt.setInt   (2, exchangeRate.getBaseID());
-		pstmt.setInt   (3, exchangeRate.getTargetID());
+		pstmt.setString(2, exchangeRate.getBaseCode());
+		pstmt.setString(3, exchangeRate.getTargetCode());
+
 	}
 	
-	private ExchangeRate getFrmRs(ResultSet rs) throws SQLException {
-		return new ExchangeRate(rs.getInt("ID"),
-								rs.getInt("BaseCurrencyID"),
-								rs.getInt("TargetCurrencyID"),
-				  new BigDecimal(rs.getString("Rate")));
+	private ExchangeRateDTO getFrmRs(ResultSet rs) throws SQLException {
+	    return new ExchangeRateDTO(
+	        rs.getInt("Ex_ID"),
+	        new Currency(
+	            rs.getInt("BaseID"),
+	            rs.getString("BaseCode"),
+	            rs.getString("BaseFullName"),
+	            rs.getString("BaseSign")
+	        ),
+	        new Currency(
+	            rs.getInt("TargetID"),
+	            rs.getString("TargetCode"),
+	            rs.getString("TargetFullName"),
+	            rs.getString("TargetSign")
+	        ),
+	        new BigDecimal(rs.getString("Rate"))
+	    );
 	}
-
-
+	
 }

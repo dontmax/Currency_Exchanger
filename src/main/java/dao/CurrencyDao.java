@@ -8,8 +8,6 @@ import models.Currency;
 public interface CurrencyDao {
 	
 	public void create(Currency value);
-	public Optional<Currency> get(String value);
-	public Optional<Currency> get(int id);
+	public Optional<Currency> get(String code);
 	public List <Currency> getAll();
-	public void delete(String Code);
 }
