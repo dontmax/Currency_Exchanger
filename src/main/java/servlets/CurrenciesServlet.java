@@ -37,9 +37,6 @@ public class CurrenciesServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json");
-		
 		try {
 			String json = gson.toJson(curService.getAll());
 			response.getWriter().write(json);			
@@ -49,24 +46,21 @@ public class CurrenciesServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		
 		String code = request.getParameter("code");
 		String fullName = request.getParameter("name");
 		String sign = request.getParameter("sign");
 		try {
 			if(!UserValidation.isCode(code)) {
-			throw new UserException(ExceptionMessage.WRONG_CODE);
-		}
-		if(!UserValidation.isFullName(fullName)){
-			throw new UserException(ExceptionMessage.WRONG_FULL_NAME);
-		}
-		if(!UserValidation.isSign(sign)) {
-			throw new UserException(ExceptionMessage.WRONG_SIGN);
-		}
-				String json = gson.toJson(curService.create(code, fullName, sign));
-				response.getWriter().write(json);	
+				throw new UserException(ExceptionMessage.WRONG_CODE);
+			}
+			if(!UserValidation.isFullName(fullName)){
+				throw new UserException(ExceptionMessage.WRONG_FULL_NAME);
+			}
+			if(!UserValidation.isSign(sign)) {
+				throw new UserException(ExceptionMessage.WRONG_SIGN);
+			}
+			String json = gson.toJson(curService.create(code, fullName, sign));
+			response.getWriter().write(json);	
 		} catch (UserException |DatabaseException e) {
 			ExceptionHandler.sendError(e.getStatus(), e.getMessage(), response);
 		} 

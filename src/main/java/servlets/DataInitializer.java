@@ -17,13 +17,6 @@ import services.ExchangeRateService;
 
 @WebListener
 public class DataInitializer implements ServletContextListener {
-	
-	
-	
-    public DataInitializer() {
-
-		
-    }
 
     public void contextInitialized(ServletContextEvent sce)  {
     	
@@ -42,8 +35,6 @@ public class DataInitializer implements ServletContextListener {
 		context.setAttribute("exService", exService);
     }
     
-    
-
     public void contextDestroyed(ServletContextEvent sce)  {
     	DataSourceUtil.shutdown();
     	DataSourceUtil.deregisterJdbcDrivers();
