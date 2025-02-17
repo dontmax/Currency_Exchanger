@@ -8,11 +8,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import services.ExchangeRateService;
 import utils.ExceptionHandler;
-import utils.NumberRound;
 import utils.UserValidation;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -58,8 +58,8 @@ public class ExchangeServlet extends HttpServlet {
 					exR.getTargetCurrency(),
 					exR.getRate(),
 					new BigDecimal(amount),
-					new BigDecimal(NumberRound.round(amount)).multiply(exR.getRate())
-					);
+					new BigDecimal(amount).multiply(exR.getRate()).setScale(2,RoundingMode.HALF_DOWN)
+							);
 			String json = gson.toJson(dto);
 			response.getWriter().write(json);
 		} catch (UserException|DatabaseException e) {

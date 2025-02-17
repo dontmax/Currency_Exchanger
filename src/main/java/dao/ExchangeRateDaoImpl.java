@@ -16,9 +16,9 @@ import exceptions.ExceptionMessage;
 import exceptions.UserException;
 import models.Currency;
 import models.ExchangeRate;
-import utils.NumberRound;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class ExchangeRateDaoImpl implements ExchangeRateDao {
 	
@@ -109,7 +109,7 @@ public class ExchangeRateDaoImpl implements ExchangeRateDao {
 	            rs.getString("TargetFullName"),
 	            rs.getString("TargetSign")
 	        ),
-	        new BigDecimal(NumberRound.round(rs.getString("Rate")))
+	        new BigDecimal(rs.getString("Rate")).setScale(2,RoundingMode.HALF_DOWN)
 	    );
 	}
 	

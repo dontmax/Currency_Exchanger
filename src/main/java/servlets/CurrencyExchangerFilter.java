@@ -16,8 +16,8 @@ public class CurrencyExchangerFilter implements Filter {
        
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletResponse httpResponse =  (HttpServletResponse) response;
-		//httpResponse.setContentType("aplication/json");
-		//httpResponse.setCharacterEncoding("UTF-8");
+		httpResponse.setContentType("aplication/json");
+		httpResponse.setCharacterEncoding("UTF-8");
 		httpResponse.setHeader("Access-Control-Allow-Origin", "*");
         httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
         httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
