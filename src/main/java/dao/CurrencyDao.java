@@ -7,7 +7,7 @@ import models.Currency;
 
 public interface CurrencyDao {
 	
-	public void create(Currency value);
-	public Optional<Currency> get(String code);
-	public List <Currency> getAll();
+	void create(Currency value);
+	Optional<Currency> get(String code);
+	List <Currency> getAll();
 }

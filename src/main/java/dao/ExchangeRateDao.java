@@ -8,8 +8,8 @@ import models.ExchangeRate;
 
 public interface  ExchangeRateDao {
 	
-	public void create(ExchangeRate value);
-	public Optional<ExchangeRateDTO> get(String baseCode, String targetCode);
-	public List <ExchangeRateDTO> getAll();
-	public void update(ExchangeRate value);
+	void create(ExchangeRate value);
+	Optional<ExchangeRateDTO> get(String baseCode, String targetCode);
+	List <ExchangeRateDTO> getAll();
+	void update(ExchangeRate value);
 }

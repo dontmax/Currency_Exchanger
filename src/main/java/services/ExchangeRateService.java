@@ -28,21 +28,19 @@ public class ExchangeRateService {
 		if(exchangeRate!=null) {
 			return exchangeRate;
 		}
-		BigDecimal Rate = new BigDecimal(0);
-		if(!(Rate=rvrsRateSearch(baseCode, targetCode)).equals(BigDecimal.ZERO)) {
-			return  create(baseCode, targetCode, Rate);
+		BigDecimal rate = reverseRateSearch(baseCode, targetCode);
+		if(!rate.equals(BigDecimal.ZERO)) {
+			return  create(baseCode, targetCode, rate);
 		}
-		if(!(Rate=ByUSDRateSearch(baseCode,targetCode)).equals(BigDecimal.ZERO)) {
-			return  create(baseCode, targetCode, Rate);
+		rate = byUSDRateSearch(baseCode, targetCode);
+		if(!rate.equals(BigDecimal.ZERO)) {
+			return  create(baseCode, targetCode, rate);
 		}
 		throw new UserException(ExceptionMessage.EXCHANGE_RATE_NOT_FOUND);	
 	}
 	
 	public List<ExchangeRateDTO> getAll() {
 		List<ExchangeRateDTO> exchangeRates = ExRDao.getAll();
-		if(exchangeRates.size()==0) {
-			throw new UserException(ExceptionMessage.EXCHANGE_RATE_NOT_FOUND);
-		}
 			return exchangeRates;
 	}
 	
@@ -51,15 +49,15 @@ public class ExchangeRateService {
 		return get(baseCode, targetCode);
 	}
 
-	public BigDecimal rvrsRateSearch(String baseCode, String targetCode) {
-		ExchangeRateDTO exchangeRate;
-		if((exchangeRate = ExRDao.get(targetCode, baseCode).orElse(null))!=null) {
+	public BigDecimal reverseRateSearch(String baseCode, String targetCode) {
+		ExchangeRateDTO exchangeRate = ExRDao.get(targetCode, baseCode).orElse(null);
+		if(exchangeRate!=null) {
 			return BigDecimal.ONE.divide(exchangeRate.getRate(), MathContext.DECIMAL128);
 		}
 		return BigDecimal.ZERO;
 	}
 	
-	public BigDecimal ByUSDRateSearch(String baseCode, String targetCode) {
+	public BigDecimal byUSDRateSearch(String baseCode, String targetCode) {
 		ExchangeRateDTO USD_A_ExR=ExRDao.get("USD", baseCode).orElse(null);
 		ExchangeRateDTO USD_B_ExR=ExRDao.get("USD", targetCode).orElse(null);
 		if(USD_A_ExR!=null&&USD_B_ExR!=null) {

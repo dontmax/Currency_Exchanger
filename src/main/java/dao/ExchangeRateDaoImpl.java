@@ -22,9 +22,6 @@ import java.math.RoundingMode;
 
 public class ExchangeRateDaoImpl implements ExchangeRateDao {
 	
-	public ExchangeRateDaoImpl() {}
-	
-	
 	@Override
 	public void create(ExchangeRate	exchangeRate) {
 		try(Connection conn = DataSourceUtil.getConnection();
@@ -48,10 +45,9 @@ public class ExchangeRateDaoImpl implements ExchangeRateDao {
 			pstmt.setString(1, baseCode);
 			pstmt.setString(2, targetCode);
 			ExchangeRateDTO exchangeRate = null;;
-			try(ResultSet rs = pstmt.executeQuery()){
-				if(rs.next()) {
-					exchangeRate=getFrmRs(rs);
-				}
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				exchangeRate=getFrmRs(rs);
 			}
 			return Optional.ofNullable(exchangeRate);
 		} catch(SQLException e) {

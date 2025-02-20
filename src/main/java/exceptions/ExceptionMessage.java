@@ -16,8 +16,10 @@ public enum ExceptionMessage {
 	WRONG_SIGN("Sign is not correct",HttpServletResponse.SC_BAD_REQUEST),
 	WRONG_RATE("Invalid Rate value",HttpServletResponse.SC_BAD_REQUEST),
 	WRONG_VALUE("Invalid amount value",HttpServletResponse.SC_BAD_REQUEST);
+	
 	private final String message;
 	private final int status;
+	
 	ExceptionMessage(String message, int status) {
 		this.message=message;
 		this.status=status;

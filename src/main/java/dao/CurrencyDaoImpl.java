@@ -15,9 +15,8 @@ import exceptions.ExceptionMessage;
 import exceptions.UserException;
 import models.Currency;
 
-public class CurrencyDaoImpl implements CurrencyDao{//Exceptions and Return Statements
+public class CurrencyDaoImpl implements CurrencyDao{
 	
-
 	@Override
 	public void create(Currency currency) {
 		try(Connection conn = DataSourceUtil.getConnection();
@@ -40,10 +39,9 @@ public class CurrencyDaoImpl implements CurrencyDao{//Exceptions and Return Stat
 			){
 			pstmt.setString(1, Code);
 			Currency currency = null;
-			try (ResultSet rs = pstmt.executeQuery()){
-				if(rs.next()) {
-					currency=getFrmRs(rs);
-				}
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				currency=getFrmRs(rs);
 			}
 			return Optional.ofNullable(currency);	
 		} catch (SQLException e) {
@@ -79,5 +77,4 @@ public class CurrencyDaoImpl implements CurrencyDao{//Exceptions and Return Stat
 							rs.getString("FullName"),
 							rs.getString("Sign"));
 		}
-
 }

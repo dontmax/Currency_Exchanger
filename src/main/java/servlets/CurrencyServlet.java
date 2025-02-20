@@ -40,10 +40,9 @@ public class CurrencyServlet extends HttpServlet {
 		try {
 			if(!UserValidation.isCode(Code)) {
 				throw new UserException(ExceptionMessage.WRONG_CODE);
-			} else {
+			}
 			String json = gson.toJson(curService.get(Code));
 			response.getWriter().write(json);
-			}
 		} catch (UserException|DatabaseException e) {
 			ExceptionHandler.sendError(e.getStatus(), e.getMessage(), response);
 		}

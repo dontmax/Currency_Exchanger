@@ -54,10 +54,9 @@ public class ExchangeRateServlet extends HttpServlet {
 		try {		
 			if(!UserValidation.isCode(BaseCode)||!UserValidation.isCode(TargetCode)) {
 				throw new UserException(ExceptionMessage.WRONG_CODE);
-			} else {
+			}
 				String json = gson.toJson(exService.get(BaseCode, TargetCode));
 				response.getWriter().write(json);
-			}
 		} catch(UserException|DatabaseException e) {
 			ExceptionHandler.sendError(e.getStatus(), e.getMessage(), response);
 		}

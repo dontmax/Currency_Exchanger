@@ -7,19 +7,19 @@ public class ExchangeRate {
 	private int id;
 	private String baseCode;
 	private String targetCode;
-	private BigDecimal Rate;
+	private BigDecimal rate;
 	
-	public ExchangeRate(int id, String baseCode, String targetCode, BigDecimal Rate) {
+	public ExchangeRate(int id, String baseCode, String targetCode, BigDecimal rate) {
 		this.id=id;
 		this.baseCode=baseCode;
 		this.targetCode=targetCode;
-		this.Rate=Rate;
+		this.rate=rate;
 	}
 	
-	public ExchangeRate(String baseCode, String targetCode, BigDecimal Rate) {
+	public ExchangeRate(String baseCode, String targetCode, BigDecimal rate) {
 		this.baseCode=baseCode;
 		this.targetCode=targetCode;
-		this.Rate=Rate;
+		this.rate=rate;
 	}
 	
 	public int getId() {
@@ -47,10 +47,10 @@ public class ExchangeRate {
 	}
 
 	public BigDecimal getRate() {
-		return Rate;
+		return rate;
 	}
 
-	public void setRate(BigDecimal Rate) {
-		this.Rate = Rate;
+	public void setRate(BigDecimal rate) {
+		this.rate = rate;
 	}
 }

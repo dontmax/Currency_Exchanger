@@ -7,17 +7,17 @@ public class Currency {
 	private String name;
 	private String sign;
 	
-	public Currency(int id, String Code, String FullName, String Sign) {
+	public Currency(int id, String code, String fullName, String sign) {
 		this.id=id;
-		this.code=Code;
-		this.name=FullName;
-		this.sign=Sign;
+		this.code=code;
+		this.name=fullName;
+		this.sign=sign;
 	}
 
-	public Currency(String Code, String FullName, String Sign) {
-		this.code=Code;
-		this.name=FullName;
-		this.sign=Sign;
+	public Currency(String code, String fullName, String sign) {
+		this.code=code;
+		this.name=fullName;
+		this.sign=sign;
 	}
 	
 	public int getId() {

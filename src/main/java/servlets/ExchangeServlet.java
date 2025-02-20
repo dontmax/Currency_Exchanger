@@ -46,7 +46,7 @@ public class ExchangeServlet extends HttpServlet {
 		String TargetCode = request.getParameter("to");
 		String amount = request.getParameter("amount");
 		try {
-			if(!UserValidation.isCode(BaseCode)||!UserValidation.isFullName(TargetCode)) {
+			if(!UserValidation.isCode(BaseCode)||!UserValidation.isCode(TargetCode)) {
 				throw new UserException(ExceptionMessage.WRONG_CODE);
 			}
 			if(!UserValidation.isNumber(amount)) {

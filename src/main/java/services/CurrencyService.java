@@ -32,10 +32,7 @@ public class CurrencyService {
 	
 	public List<Currency> getAll() {
 		List<Currency> currencies = curDao.getAll();
-		if(currencies.size()==0) {
-			throw new UserException(ExceptionMessage.CURRENCY_NOT_FOUND);
-		}
-			return currencies;		
+		return currencies;		
 	}
 	
 }
